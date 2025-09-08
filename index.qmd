@@ -13,7 +13,7 @@ packages <- c("wordcloud2", "here")
 #| output: false
 #| echo: false
 
-install.packages(setdiff(packages, rownames(installed.packages())), repos = "http://cran.us.r-project.org")
+#install.packages(setdiff(packages, rownames(installed.packages())), repos = "http://cran.us.r-project.org")
 ```
 
 ```{r}
