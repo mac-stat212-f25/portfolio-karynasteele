@@ -64,12 +64,13 @@ Examine the [NYTimes 2015 Temperature Visualization (html)](https://www.nytimes.
 - Relate the intro paragraph: "Scientists declared that 2015 was Earth’s hottest year on record..." to the *design* of the visualization.  In particular, based on the intro paragraph,
   - What key message/claim does NYTimes want readers to be able to explore? 
   - How did this goal inform what information is displayed in the visualization?
+  
+  
 
 **Aesthetic Mapping** 
 
 - What specific variables (from the data codebook) underlie the visualization?
 - How do these variables map to aesthetics of the visual elements, eg, position, size, shape, and color of glyphs?
-
 
 
 
@@ -124,6 +125,7 @@ Look at the [`geom_linerange` documentation page](https://ggplot2.tidyverse.org/
 
 ```{r weather_plot_temp_records}
 ggplot(weather) +
+    geom_linerange(data = weather, mapping = aes(x = dateInYear, ymin = RecordLow, ymax = RecordHigh), color = "#ECEBE3")+
     theme_classic()
 ```
 
@@ -146,8 +148,23 @@ In your visualization, also display the usual temperatures (`NormalLow` and `Nor
 ![SFO observed, Average, and Record Daily Temperatures in 2011](https://hash-mac.github.io/stat212site-f25/images/sfo_second_graph.png)
 
 ```{r weather_plot_temp_all}
-
-
+ggplot(weather) +
+    geom_linerange(
+      data = weather, 
+      mapping = aes(x = dateInYear, ymin = RecordLow, ymax = RecordHigh), 
+      color = "#ECEBE3"
+    ) +
+    geom_linerange(
+      data = weather,
+      mapping = aes(x = dateInYear, ymin = NormalLow, ymax = NormalHigh),
+      color = "#C8B8BA"
+    ) +
+    geom_linerange(
+      data = weather,
+      mapping = aes(x = dateInYear, ymin = Low, ymax = High),
+      color = "#A90248"
+    ) +
+    theme_classic() 
 ```
 
 
@@ -161,8 +178,23 @@ If you'd like finer control of the width of these lines/rectangles, check out th
 Recreate the visual demarcations of the months by adding vertical lines separating the months.  Brainstorm how we might draw those vertical lines. What `geom` might we use?  What subset of the data might we use in that `geom` layer to draw lines only at the month divisions? 
 
 ```{r }
-
-
+ggplot(weather) +
+    geom_linerange(
+      data = weather, 
+      mapping = aes(x = dateInYear, ymin = RecordLow, ymax = RecordHigh), 
+      color = "#ECEBE3"
+    ) +
+    geom_linerange(
+      data = weather,
+      mapping = aes(x = dateInYear, ymin = NormalLow, ymax = NormalHigh),
+      color = "#C8B8BA"
+    ) +
+    geom_linerange(
+      data = weather,
+      mapping = aes(x = dateInYear, ymin = Low, ymax = High),
+      color = "#A90248"
+    ) +
+    theme_classic() 
 ```
 
 
