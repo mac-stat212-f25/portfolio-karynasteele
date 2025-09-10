@@ -1,5 +1,54 @@
 ---
 title: "TidyTuesday Sample 1"
+author: "Karyna Steele"
 ---
 
-Add content here
+```{r}
+# Using R
+# Option 1: tidytuesdayR R package 
+install.packages("tidytuesdayR")
+
+tuesdata <- tidytuesdayR::tt_load('2025-09-23')
+## OR
+tuesdata <- tidytuesdayR::tt_load(2025, week = 38)
+
+fide_ratings_august <- tuesdata$fide_ratings_august
+fide_ratings_september <- tuesdata$fide_ratings_september
+
+# Option 2: Read directly from GitHub
+
+fide_ratings_august <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-23/fide_ratings_august.csv')
+fide_ratings_september <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-23/fide_ratings_september.csv')
+```
+
+## Research Question
+### On average, which countries produce chess players with the highest ratings?
+
+*only keeping countries with more than 2500 players*
+
+```{r}
+fide_ratings_september1 <- fide_ratings_september %>%
+  group_by(fed) %>%
+  summarise(avg_rating = mean(rating),
+            n = n()) %>%
+  filter(n > 2500)
+```
+
+```{r}
+ggplot(fide_ratings_september1, aes(x = fed, y = avg_rating)) +
+  geom_col(fill = "steelblue") + 
+  theme_classic()
+```
+```{r, Horizontal bar chart showing average chess ratings by federation for countries with more than 2500 players. Bars are colored with a gradient from light blue to dark blue based on rating. The federation with the highest average rating is annotated in red.}
+fide_ratings_september1 %>%
+  ggplot(aes(x = reorder(fed, avg_rating), y = avg_rating, fill = avg_rating)) +
+  geom_col() +
+  coord_flip() +
+  theme_classic() +
+  labs(title = "Which Federations Have the Highest Average Chess Ratings?",
+       subtitle = "Countries with >2500 players (FIDE September ratings)",
+       x = "Federation", y = "Average Rating",
+       caption = "Author: Karyna Steele | Date: September 2025 | Source: FIDE Player Database") +
+  theme_classic()
+``` 
+
