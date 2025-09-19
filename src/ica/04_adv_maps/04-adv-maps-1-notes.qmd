@@ -57,10 +57,10 @@ First load required packages.
 ```{r setup}
 #Install these packages first
 
-# install.packages(c("sf","elevatr","terra","stars","tidycensus"))
-# install.packages('devtools')
-# devtools::install_github("ropensci/USAboundaries")
-# install.packages("USAboundariesData", repos = "https://ropensci.r-universe.dev", type = "source")
+#install.packages(c("sf","elevatr","terra","stars","tidycensus"))
+#install.packages('devtools')
+#devtools::install_github("ropensci/USAboundaries")
+#install.packages("USAboundariesData", repos = "https://ropensci.r-universe.dev", type = "source")
 
 
 library(tidyverse)
@@ -102,8 +102,8 @@ See [Spatial Data Appendix](https://hash-mac.github.io/stat212site-f25/notes/spa
 nc <- st_read(system.file("shape/nc.shp", package = "sf"))
 
 # Read in shapefiles just downloaded
-mn_cities <- st_read("Add correct relative path to city_and_township_population_centers.shp")
-mn_water <- st_read("Add correct relative path to LakesAndRivers.shp")
+mn_cities <- st_read("./data/shp_loc_pop_centers/city_and_township_population_centers.shp")
+mn_water <- st_read("./data/shp_water_lakes_rivers/LakesAndRivers.shp")
 ```
 
 The `sf` package reads in spatial data in `data.frame`-like format. Using the `class()` function we can check the **class** (type) of object that we just read in. Note the presence of the "sf" and "data.frame" classes:
@@ -117,7 +117,7 @@ class(mn_water)
 
 
 
-When we read in spatial objects, it is useful to check what CRS underlies the data. We can do that with `st_crs()` from the `sf` package:
+When we read in spatial objects, it is useful to check what CRS (coordinate reference system) underlies the data. We can do that with `st_crs()` from the `sf` package:
 
 ```{r check_nc_crs}
 st_crs(nc)
@@ -166,7 +166,7 @@ transform_and_plot <- function(spatial_obj, new_crs) {
 # Example usage of this function (using a South Carolina CRS)
 transform_and_plot(nc, new_crs = "EPSG:32133")
 
-
+transform_and_plot(nc, new_crs = "EPSG:26918")
 ```
 
 **Verify your understanding:** If you had point location data that was not in the NAD27 CRS, what would you expect about the accuracy of how they would be overlaid on the original North Carolina map?
@@ -347,4 +347,3 @@ mn_counties_leaf |>
 ## Done!
 
 - Check the ICA Instructions for how to (a) push your code to GitHub and (b) update your portfolio website
-
