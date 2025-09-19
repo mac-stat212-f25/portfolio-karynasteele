@@ -21,8 +21,8 @@
     ]
   },
   {
-    "objectID": "src/tt/2025-07-08.html",
-    "href": "src/tt/2025-07-08.html",
+    "objectID": "src/tt/hw01-tt.html",
+    "href": "src/tt/hw01-tt.html",
     "title": "TidyTuesday Sample 1",
     "section": "",
     "text": "Research Question",
@@ -32,8 +32,8 @@
     ]
   },
   {
-    "objectID": "src/tt/2025-07-08.html#research-question",
-    "href": "src/tt/2025-07-08.html#research-question",
+    "objectID": "src/tt/hw01-tt.html#research-question",
+    "href": "src/tt/hw01-tt.html#research-question",
     "title": "TidyTuesday Sample 1",
     "section": "",
     "text": "On average, which countries produce chess players with the highest ratings?\nonly keeping countries with more than 2500 players\n\nCodefide_ratings_september1 &lt;- fide_ratings_september %&gt;%\n  group_by(fed) %&gt;%\n  summarise(avg_rating = mean(rating),\n            n = n()) %&gt;%\n  filter(n &gt; 2500)\n\n\n\nCodeggplot(fide_ratings_september1, aes(x = fed, y = avg_rating)) +\n  geom_col(fill = \"steelblue\") + \n  theme_classic()\n\n\n\n\n\n\n\n\nCodefide_ratings_september1 %&gt;%\n  ggplot(aes(x = reorder(fed, avg_rating), y = avg_rating, fill = avg_rating)) +\n  geom_col() +\n  coord_flip() +\n  labs(title = \"Which Federations Have the Highest Average Chess Ratings?\",\n       subtitle = \"Countries with &gt;2500 players (FIDE September ratings)\",\n       x = \"Federation\", y = \"Average Rating\",\n       caption = \"Author: Karyna Steele | Date: September 2025 | Source: FIDE Player Database\") +\n  theme_classic()",
@@ -43,14 +43,25 @@
     ]
   },
   {
-    "objectID": "src/tt/2025-07-15.html",
-    "href": "src/tt/2025-07-15.html",
-    "title": "TidyTuesday Sample 2",
+    "objectID": "src/tt/hw02-tt.html",
+    "href": "src/tt/hw02-tt.html",
+    "title": "Homework 02",
     "section": "",
-    "text": "Add content here",
+    "text": "TidyTuesday Section (optional)\nExplore the week’s TidyTuesday challenge. Develop a research question, then answer it through a short data story with effective visualization(s). Provide sufficient background for readers to grasp your narrative.",
     "crumbs": [
       "TidyTuesday",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>TidyTuesday Sample 2</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Homework 02</span>"
+    ]
+  },
+  {
+    "objectID": "src/tt/hw02-tt.html#tidytuesday-section-optional",
+    "href": "src/tt/hw02-tt.html#tidytuesday-section-optional",
+    "title": "Homework 02",
+    "section": "",
+    "text": "Instructions\n\n\n\nYou can count work on this week’s TidyTuesday toward the exceptional work required for an A in the Homework component.",
+    "crumbs": [
+      "TidyTuesday",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Homework 02</span>"
     ]
   },
   {
@@ -168,7 +179,7 @@
     "href": "src/ica/03-adv-ggplot-notes.html#exercise-4",
     "title": "3 Advanced Data Viz",
     "section": "Exercise 4",
-    "text": "Exercise 4\nRecreate the visual demarcations of the months by adding vertical lines separating the months. Brainstorm how we might draw those vertical lines. What geom might we use? What subset of the data might we use in that geom layer to draw lines only at the month divisions?\n\nCodeggplot(weather) +\n    geom_linerange(\n      data = weather, \n      mapping = aes(x = dateInYear, ymin = RecordLow, ymax = RecordHigh), \n      color = \"#ECEBE3\"\n    ) +\n    geom_linerange(\n      data = weather,\n      mapping = aes(x = dateInYear, ymin = NormalLow, ymax = NormalHigh),\n      color = \"#C8B8BA\"\n    ) +\n    geom_linerange(\n      data = weather,\n      mapping = aes(x = dateInYear, ymin = Low, ymax = High),\n      color = \"#A90248\"\n    ) +\n    theme_classic()",
+    "text": "Exercise 4\nRecreate the visual demarcations of the months by adding vertical lines separating the months. Brainstorm how we might draw those vertical lines. What geom might we use? What subset of the data might we use in that geom layer to draw lines only at the month divisions?\n\nCodemonth_boundaries &lt;- weather %&gt;%\n  group_by(Month) %&gt;%\n  summarize(xintercept = min(dateInYear))\n\nggplot(weather) +\n    geom_linerange(\n      data = weather, \n      mapping = aes(x = dateInYear, ymin = RecordLow, ymax = RecordHigh), \n      color = \"#ECEBE3\"\n    ) +\n    geom_linerange(\n      data = weather,\n      mapping = aes(x = dateInYear, ymin = NormalLow, ymax = NormalHigh),\n      color = \"#C8B8BA\"\n    ) +\n    geom_linerange(\n      data = weather,\n      mapping = aes(x = dateInYear, ymin = Low, ymax = High),\n      color = \"#A90248\"\n    ) +\n    geom_vline(data = month_boundaries, aes(xintercept = xintercept), linetype = \"dotted\", color = \"#C8B8BA\") +\n    theme_classic()",
     "crumbs": [
       "In-Class Activities",
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>3 Advanced Data Viz</span>"
@@ -179,7 +190,7 @@
     "href": "src/ica/03-adv-ggplot-notes.html#exercise-5",
     "title": "3 Advanced Data Viz",
     "section": "Exercise 5",
-    "text": "Exercise 5\nChange the x-axis labels so that the month names display in the center of each month’s slice of the plot.\n\n\n\n\n\n\nMonth Names\n\n\n\nR has built-in variables called month.abb and month.name that contain abbreviated and full month names.\n\n\nTry to figuring out this new challenge using search engines and LLMs:\n\nSearch Engines. Use Google to search for possible solutions using the jargon that is most likely to return the most relevant results. Record search queries and your thought process in selecting which search results to look at first.\nLLMs. Use ChatGPT or Gemini with prompts that will most efficiently get you the desired results. Record the chat prompts used and output given. Evaluate the output. Do you fully understand the code generated? How can you tell that the generated code is correct?",
+    "text": "Exercise 5\nChange the x-axis labels so that the month names display in the center of each month’s slice of the plot.\n\n\n\n\n\n\nMonth Names\n\n\n\nR has built-in variables called month.abb and month.name that contain abbreviated and full month names.\n\n\nTry to figuring out this new challenge using search engines and LLMs:\n\nSearch Engines. Use Google to search for possible solutions using the jargon that is most likely to return the most relevant results. Record search queries and your thought process in selecting which search results to look at first.\nLLMs. Use ChatGPT or Gemini with prompts that will most efficiently get you the desired results. Record the chat prompts used and output given. Evaluate the output. Do you fully understand the code generated? How can you tell that the generated code is correct?\n\n\nCodemonth_boundaries &lt;- weather %&gt;%\n  group_by(Month) %&gt;%\n  summarize(xintercept = min(dateInYear))\n\nmonth_midpoint &lt;- weather %&gt;%\n  group_by(Month) %&gt;%\n  summarize(xintercept = (max(dateInYear) + min(dateInYear))/2)\n  \nggplot(weather) +\n    geom_linerange(\n      data = weather, \n      mapping = aes(x = dateInYear, ymin = RecordLow, ymax = RecordHigh), \n      color = \"#ECEBE3\"\n    ) +\n    geom_linerange(\n      data = weather,\n      mapping = aes(x = dateInYear, ymin = NormalLow, ymax = NormalHigh),\n      color = \"#C8B8BA\"\n    ) +\n    geom_linerange(\n      data = weather,\n      mapping = aes(x = dateInYear, ymin = Low, ymax = High),\n      color = \"#A90248\"\n    ) +\n    geom_vline(\n      data = month_boundaries, \n      aes(xintercept = xintercept), \n      linetype = \"dotted\", \n      color = \"#C8B8BA\") +\n    scale_x_continuous(\n      breaks = month_midpoint$xintercept,\n      labels = month.abb\n    ) +\n    xlab(\n      \"Month\"\n    ) +\n    ylab(\n      \"Temperature\"\n    ) +\n    theme_classic()",
     "crumbs": [
       "In-Class Activities",
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>3 Advanced Data Viz</span>"
@@ -190,7 +201,7 @@
     "href": "src/ica/03-adv-ggplot-notes.html#exercise-6",
     "title": "3 Advanced Data Viz",
     "section": "Exercise 6",
-    "text": "Exercise 6\nCreate a precipitation plot that looks like the following. Note that\n\nThe triangles point to precipitation records–refer to the data codebook above for the RecordP variable.\nThe numbers on the plot indicate the total precipitation for the month–search the hjust and vjust options to adjust the alignment of the numbers.\nThe blue and tan colors hex codes are \"#32a3d8\" and \"#ebeae2\", respectively.\n\n\n\nSFO Precipitation in 2011",
+    "text": "Exercise 6\nCreate a precipitation plot that looks like the following. Note that\n\nThe triangles point to precipitation records–refer to the data codebook above for the RecordP variable.\nThe numbers on the plot indicate the total precipitation for the month–search the hjust and vjust options to adjust the alignment of the numbers.\nThe blue and tan colors hex codes are \"#32a3d8\" and \"#ebeae2\", respectively.\n\n\n\nSFO Precipitation in 2011\n\n\nCoderecord_points &lt;- weather %&gt;% \n  filter(RecordP == \"TRUE\")\n\nmonthly_precip &lt;- weather %&gt;%\n  group_by(Month) %&gt;%\n  slice_max(dateInYear)\n  \nggplot(weather, aes(x = dateInYear, y = CulmPrec)) +\n  geom_area(fill = \"#ebeae2\", color = \"#32a3d8\", linewidth = 0.2) +\n  geom_point(data = record_points, aes(x = dateInYear, y = CulmPrec + 0.2), shape = 25, fill = \"black\") +\n  geom_text(data = monthly_precip, aes(label = CulmPrec), vjust = -0.2, hjust = 0.75, size = 2.5) +\n  theme_classic()",
     "crumbs": [
       "In-Class Activities",
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>3 Advanced Data Viz</span>"
@@ -257,6 +268,17 @@
     "title": "Appendix C — Mind Maps",
     "section": "Data Visualization",
     "text": "Data Visualization",
+    "crumbs": [
+      "Appendices",
+      "<span class='chapter-number'>C</span>  <span class='chapter-title'>Mind Maps</span>"
+    ]
+  },
+  {
+    "objectID": "mm/mm.html#spatial-vizualization",
+    "href": "mm/mm.html#spatial-vizualization",
+    "title": "Appendix C — Mind Maps",
+    "section": "Spatial Vizualization",
+    "text": "Spatial Vizualization",
     "crumbs": [
       "Appendices",
       "<span class='chapter-number'>C</span>  <span class='chapter-title'>Mind Maps</span>"
