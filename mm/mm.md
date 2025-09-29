@@ -7,3 +7,7 @@
 ## Data Visualization
 
 ![](0908-chapter_1.jpg)
+
+## Spatial Vizualization
+
+![](0912-spatial_viz.jpg)

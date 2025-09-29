@@ -1,0 +1,55 @@
+---
+title: "Exam 1"
+format: html
+---
+
+## Plotting Raster Data
+
+In our spatial visualization unit, we focused heavily on vector data using the sf package. However, the reading also introduced raster data, which we didn't explore as deeply in class. This led me to the following question: Can I layer a raster image with vector data in R using terra and sf?
+
+To answer this, I recreated the crash data plot from HW03, but added a raster layer underneath showing land cover over the greater Ramsey County area. I used the terra package to load and crop the raster to match the extent of the vector data, and then used ggplot2 to combine the layers into a single visualization.
+
+One of the biggest takeaways from this process was realizing that while sf and terra handle different data types, they share many similar functions: st_crs() and crs() both handle coordinate reference systems (CRS), and st_crop() and crop() both subset spatial data by extent.
+
+I also learned how important it is for raster and vector data to share the same CRS, or the layers won’t align properly. After transforming the vector data with st_transform() to match the raster's CRS, I was able to overlay the crash points and census tracts over the land cover raster successfully.
+
+This visualization opens up the possibility of analyzing how land type (e.g., urban vs. green space) might relate to the distribution of crashes. In the future, I would like to find an image that better shows land type, as this image is hard to interpret. However, it is possible to see that closer to the river is more of a city area, which could be a cause for such a high density of crashes.
+
+Find the code and plot below:
+
+```{r}
+library(tidymodels)
+library(tidycensus)
+library(stringr)
+library(readr)
+library(sf)
+library(ggplot2)
+library(terra)
+```
+
+```{r}
+land_cover <- rast("../ex 1/rams_tif/rams_doq.tif")
+crs(land_cover) <- "EPSG:26915"
+
+census2020_proj <- st_transform(census2020_sub, crs = crs(land_cover))
+
+land_crop <- crop(land_cover, vect(census2020_proj))
+```
+
+```{r}
+land_df <- as.data.frame(land_cover, xy = TRUE)
+
+colnames(land_df)[3] <- "land_type"
+
+ggplot() +
+  geom_raster(data = land_df, aes(x = x, y = y, fill = land_type)) +
+  geom_sf(data = census2020_proj, fill = NA, color = "black", linewidth = 0.5) +
+  geom_sf(data = crashes, aes(geometry = geometry), color = "red", alpha = 0.5) +
+  scale_fill_gradientn(colors = c("white", "blue")) +
+  labs(
+    title = "Crashes Overlaid on Land Cover in Ramsey County",
+    fill = "Land Type",
+    caption = "Data: HW03 + Raster from rams_doq.tif"
+  ) +
+  theme_minimal()
+```
