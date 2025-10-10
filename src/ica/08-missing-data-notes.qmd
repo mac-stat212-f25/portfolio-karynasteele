@@ -148,10 +148,22 @@ Within a dataset, multiple mechanisms may be present--we need to consider the mi
 
 1. **Missing data mechanism** For each of the following situations, propose what missing data mechanism you think is most likely at play. 
   a. In a clinical trial, some patients dropped out before the end of the study. Their reasons for dropping out were not recorded.
+    
+    Missing not at random
+    
+    Missingness is related to unobserved reason/variable (reason for dropping out of the study)
+    
   b. A weather station records temperature, humidity, and wind speed every hour. Some of the recorded values are missing.
+    
+    Missing completely at random
+    
+    Missingness is not related to any variable (missing values are due to technical glitch) and is the same for all cases 
+  
   c. A social media platform collects data on user interactions, such as likes, comments, and shares. Some interactions are not recorded due to bugs in the code.
 
-
+    Missing completely at random
+    
+    Missingness is not related to any variable and is the same for all cases
 
 ## Exploring Missing Data 
 
@@ -265,6 +277,7 @@ ggplot(airquality_mod, aes(x = Solar.R_mod2, y = Ozone)) +
     geom_vline(data = airquality_mod |> filter(is.na(Ozone)), mapping = aes(xintercept = Solar.R_mod2)) +
     labs(title = "Alternate Situation 2")
 ```
+Ozone values are missing when solar is higher for both models. In alternate situation 1, there are values for solar in the range of the missing ozone values, which helps predict them. In alternate situation 2, the ozone values that are missing are outside of the range of the solar values, so they cannot be predicted. 
 
 3. **Ozone mechanism detection** Continue the investigation of missingness for `Ozone`. 
 
@@ -273,10 +286,19 @@ We want to see how `Month`, `Wind`, and `Temp` relate to the chance of missingne
 Does it look like a linear regression model (perhaps with variable transformations) could be effective in imputing the missing ozone data?
 
 ```{r}
+ggplot(airquality, aes(x = factor(Month), fill = is.na(Ozone))) +
+  geom_bar() + 
+  theme_minimal()
 
+ggplot(airquality, aes(y = Wind, x = is.na(Ozone))) +
+  geom_boxplot() +
+  theme_minimal()
+
+ggplot(airquality, aes(x = is.na(Ozone), y = Temp)) +
+  geom_boxplot() +
+  theme_minimal()
 ```
-
-
+Imputation would work here as the values are missing at random. There are more Ozone values missing when month is June and less missing when the month is august.
 
 ## Regression Imputation 
 
