@@ -102,8 +102,8 @@ See [Spatial Data Appendix](https://hash-mac.github.io/stat212site-f25/notes/spa
 nc <- st_read(system.file("shape/nc.shp", package = "sf"))
 
 # Read in shapefiles just downloaded
-mn_cities <- st_read("./data/shp_loc_pop_centers/city_and_township_population_centers.shp")
-mn_water <- st_read("./data/shp_water_lakes_rivers/LakesAndRivers.shp")
+mn_cities <- st_read("./04_adv_maps/data/shp_loc_pop_centers/city_and_township_population_centers.shp")
+mn_water <- st_read("./04_adv_maps/data/shp_water_lakes_rivers/LakesAndRivers.shp")
 ```
 
 The `sf` package reads in spatial data in `data.frame`-like format. Using the `class()` function we can check the **class** (type) of object that we just read in. Note the presence of the "sf" and "data.frame" classes:
@@ -279,16 +279,19 @@ Build on our existing map by adding a raster layer for elevation as the backgrou
 - We then use `st_crop()` to trim a spatial object to a given bounding box.
 
 ```{r get_elevation_data_zoom_in}
-seven_countyarea <- mn_counties |>
-    filter(name %in% c("Anoka", "Hennepin", "Ramsey", "Dakota", "Carver", "Washington", "Scott")) |> 
-    st_bbox()
-seven_countyarea
+# 1. Filter Twin Cities counties
+seven_counties_sf <- mn_counties |> 
+  filter(name %in% c("Anoka", "Hennepin", "Ramsey", 
+                     "Dakota", "Carver", "Washington", "Scott"))
 
-elevation <- elevatr::get_elev_raster(mn_counties |> st_crop(seven_countyarea), z = 9, clip = "bbox")
-raster::crs(elevation) <- sf::st_crs(mn_counties)
+# 2. Get elevation raster for the polygon area
+elevation <- elevatr::get_elev_raster(locations = seven_counties_sf, z = 9, clip = "bbox")
 
-# Convert to data frame for plotting
-elev_df <- elevation |> terra::as.data.frame(xy = TRUE)
+# 3. Assign CRS to the raster
+raster::crs(elevation) <- st_crs(mn_counties)
+
+# 4. Convert raster to data frame for ggplot
+elev_df <- terra::as.data.frame(elevation, xy = TRUE)
 colnames(elev_df) <- c("x", "y", "elevation")
 ```
 
@@ -302,7 +305,7 @@ ggplot() +
     geom_sf(data = mn_cities |> filter(Population >= 10000), mapping = aes(color = Population, size = Population)) + # cities layer
     scale_color_viridis_c(option = "magma") + # continuous (gradient) color scale
     scale_fill_gradient(low = "darkgreen", high = "white") + # continuous (gradient) fill scale
-    coord_sf(xlim = seven_countyarea[c("xmin", "xmax")], ylim = seven_countyarea[c("ymin", "ymax")]) + # NEW: crop map to Twin Cities bounding box
+    coord_sf(xlim = seven_counties_sf[c("xmin", "xmax")], ylim = seven_counties_sf[c("ymin", "ymax")]) + # NEW: crop map to Twin Cities bounding box
     labs(title = "Twin Cities with Population >= 10,000") + 
     ggthemes::theme_map() +
     theme(legend.position = "none") # remove legend
