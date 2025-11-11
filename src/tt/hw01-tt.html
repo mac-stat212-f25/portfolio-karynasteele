@@ -138,7 +138,7 @@ cookieconsent.run({
       <a href="../../index.html" class="sidebar-logo-link">
       <img src="../../assets/sidebar-logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none"></a>
     <div class="sidebar-title mb-0 py-0">
-      <a href="../../">Your Name Here</a> 
+      <a href="../../">Karyna Steele</a> 
         <div class="sidebar-tools-main">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
@@ -325,26 +325,18 @@ cookieconsent.run({
 
 
 </header><div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Using R</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="co"># Option 1: tidytuesdayR R package </span></span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="co"># install.packages("tidytuesdayR", repos = "https://cloud.r-project.org")</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(readr)</span>
 <span id="cb1-4"><a href="#cb1-4"></a></span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">library</span>(dplyr)  </span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="fu">library</span>(ggplot2) </span>
-<span id="cb1-7"><a href="#cb1-7"></a><span class="fu">library</span>(readr)</span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="fu">library</span>(tidytuesdayR)</span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="co"># Read directly from GitHub — no credentials needed</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>fide_ratings_august <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
+<span id="cb1-7"><a href="#cb1-7"></a>  <span class="st">"https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-23/fide_ratings_august.csv"</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a>)</span>
 <span id="cb1-9"><a href="#cb1-9"></a></span>
-<span id="cb1-10"><a href="#cb1-10"></a>tuesdata <span class="ot">&lt;-</span> tidytuesdayR<span class="sc">::</span><span class="fu">tt_load</span>(<span class="st">'2025-09-23'</span>)</span>
-<span id="cb1-11"><a href="#cb1-11"></a><span class="do">## OR</span></span>
-<span id="cb1-12"><a href="#cb1-12"></a>tuesdata <span class="ot">&lt;-</span> tidytuesdayR<span class="sc">::</span><span class="fu">tt_load</span>(<span class="dv">2025</span>, <span class="at">week =</span> <span class="dv">38</span>)</span>
-<span id="cb1-13"><a href="#cb1-13"></a></span>
-<span id="cb1-14"><a href="#cb1-14"></a>fide_ratings_august <span class="ot">&lt;-</span> tuesdata<span class="sc">$</span>fide_ratings_august</span>
-<span id="cb1-15"><a href="#cb1-15"></a>fide_ratings_september <span class="ot">&lt;-</span> tuesdata<span class="sc">$</span>fide_ratings_september</span>
-<span id="cb1-16"><a href="#cb1-16"></a></span>
-<span id="cb1-17"><a href="#cb1-17"></a><span class="co"># Option 2: Read directly from GitHub</span></span>
-<span id="cb1-18"><a href="#cb1-18"></a></span>
-<span id="cb1-19"><a href="#cb1-19"></a>fide_ratings_august <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">'https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-23/fide_ratings_august.csv'</span>)</span>
-<span id="cb1-20"><a href="#cb1-20"></a>fide_ratings_september <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">'https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-23/fide_ratings_september.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-10"><a href="#cb1-10"></a>fide_ratings_september <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
+<span id="cb1-11"><a href="#cb1-11"></a>  <span class="st">"https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-23/fide_ratings_september.csv"</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <section id="research-question" class="level2"><h2 class="anchored" data-anchor-id="research-question">Research Question</h2>
@@ -1023,57 +1015,49 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb5-4"><a href="#cb5-4"></a><span class="co">---</span></span>
 <span id="cb5-5"><a href="#cb5-5"></a></span>
 <span id="cb5-8"><a href="#cb5-8"></a><span class="in">```{r}</span></span>
-<span id="cb5-9"><a href="#cb5-9"></a><span class="co"># Using R</span></span>
-<span id="cb5-10"><a href="#cb5-10"></a><span class="co"># Option 1: tidytuesdayR R package </span></span>
-<span id="cb5-11"><a href="#cb5-11"></a><span class="co"># install.packages("tidytuesdayR", repos = "https://cloud.r-project.org")</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb5-10"><a href="#cb5-10"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb5-11"><a href="#cb5-11"></a><span class="fu">library</span>(readr)</span>
 <span id="cb5-12"><a href="#cb5-12"></a></span>
-<span id="cb5-13"><a href="#cb5-13"></a><span class="fu">library</span>(dplyr)  </span>
-<span id="cb5-14"><a href="#cb5-14"></a><span class="fu">library</span>(ggplot2) </span>
-<span id="cb5-15"><a href="#cb5-15"></a><span class="fu">library</span>(readr)</span>
-<span id="cb5-16"><a href="#cb5-16"></a><span class="fu">library</span>(tidytuesdayR)</span>
+<span id="cb5-13"><a href="#cb5-13"></a><span class="co"># Read directly from GitHub — no credentials needed</span></span>
+<span id="cb5-14"><a href="#cb5-14"></a>fide_ratings_august <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
+<span id="cb5-15"><a href="#cb5-15"></a>  <span class="st">"https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-23/fide_ratings_august.csv"</span></span>
+<span id="cb5-16"><a href="#cb5-16"></a>)</span>
 <span id="cb5-17"><a href="#cb5-17"></a></span>
-<span id="cb5-18"><a href="#cb5-18"></a>tuesdata <span class="ot">&lt;-</span> tidytuesdayR<span class="sc">::</span><span class="fu">tt_load</span>(<span class="st">'2025-09-23'</span>)</span>
-<span id="cb5-19"><a href="#cb5-19"></a><span class="do">## OR</span></span>
-<span id="cb5-20"><a href="#cb5-20"></a>tuesdata <span class="ot">&lt;-</span> tidytuesdayR<span class="sc">::</span><span class="fu">tt_load</span>(<span class="dv">2025</span>, <span class="at">week =</span> <span class="dv">38</span>)</span>
-<span id="cb5-21"><a href="#cb5-21"></a></span>
-<span id="cb5-22"><a href="#cb5-22"></a>fide_ratings_august <span class="ot">&lt;-</span> tuesdata<span class="sc">$</span>fide_ratings_august</span>
-<span id="cb5-23"><a href="#cb5-23"></a>fide_ratings_september <span class="ot">&lt;-</span> tuesdata<span class="sc">$</span>fide_ratings_september</span>
-<span id="cb5-24"><a href="#cb5-24"></a></span>
-<span id="cb5-25"><a href="#cb5-25"></a><span class="co"># Option 2: Read directly from GitHub</span></span>
-<span id="cb5-26"><a href="#cb5-26"></a></span>
-<span id="cb5-27"><a href="#cb5-27"></a>fide_ratings_august <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">'https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-23/fide_ratings_august.csv'</span>)</span>
-<span id="cb5-28"><a href="#cb5-28"></a>fide_ratings_september <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">'https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-23/fide_ratings_september.csv'</span>)</span>
-<span id="cb5-29"><a href="#cb5-29"></a><span class="in">```</span></span>
-<span id="cb5-30"><a href="#cb5-30"></a></span>
-<span id="cb5-31"><a href="#cb5-31"></a><span class="fu">## Research Question</span></span>
-<span id="cb5-32"><a href="#cb5-32"></a><span class="fu">### On average, which countries produce chess players with the highest ratings?</span></span>
-<span id="cb5-33"><a href="#cb5-33"></a></span>
-<span id="cb5-34"><a href="#cb5-34"></a>*only keeping countries with more than 2500 players*</span>
-<span id="cb5-35"><a href="#cb5-35"></a></span>
-<span id="cb5-38"><a href="#cb5-38"></a><span class="in">```{r}</span></span>
-<span id="cb5-39"><a href="#cb5-39"></a>fide_ratings_september1 <span class="ot">&lt;-</span> fide_ratings_september <span class="sc">%&gt;%</span></span>
-<span id="cb5-40"><a href="#cb5-40"></a>  <span class="fu">group_by</span>(fed) <span class="sc">%&gt;%</span></span>
-<span id="cb5-41"><a href="#cb5-41"></a>  <span class="fu">summarise</span>(<span class="at">avg_rating =</span> <span class="fu">mean</span>(rating),</span>
-<span id="cb5-42"><a href="#cb5-42"></a>            <span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb5-43"><a href="#cb5-43"></a>  <span class="fu">filter</span>(n <span class="sc">&gt;</span> <span class="dv">2500</span>)</span>
+<span id="cb5-18"><a href="#cb5-18"></a>fide_ratings_september <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
+<span id="cb5-19"><a href="#cb5-19"></a>  <span class="st">"https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-23/fide_ratings_september.csv"</span></span>
+<span id="cb5-20"><a href="#cb5-20"></a>)</span>
+<span id="cb5-21"><a href="#cb5-21"></a><span class="in">```</span></span>
+<span id="cb5-22"><a href="#cb5-22"></a></span>
+<span id="cb5-23"><a href="#cb5-23"></a><span class="fu">## Research Question</span></span>
+<span id="cb5-24"><a href="#cb5-24"></a><span class="fu">### On average, which countries produce chess players with the highest ratings?</span></span>
+<span id="cb5-25"><a href="#cb5-25"></a></span>
+<span id="cb5-26"><a href="#cb5-26"></a>*only keeping countries with more than 2500 players*</span>
+<span id="cb5-27"><a href="#cb5-27"></a></span>
+<span id="cb5-30"><a href="#cb5-30"></a><span class="in">```{r}</span></span>
+<span id="cb5-31"><a href="#cb5-31"></a>fide_ratings_september1 <span class="ot">&lt;-</span> fide_ratings_september <span class="sc">%&gt;%</span></span>
+<span id="cb5-32"><a href="#cb5-32"></a>  <span class="fu">group_by</span>(fed) <span class="sc">%&gt;%</span></span>
+<span id="cb5-33"><a href="#cb5-33"></a>  <span class="fu">summarise</span>(<span class="at">avg_rating =</span> <span class="fu">mean</span>(rating),</span>
+<span id="cb5-34"><a href="#cb5-34"></a>            <span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb5-35"><a href="#cb5-35"></a>  <span class="fu">filter</span>(n <span class="sc">&gt;</span> <span class="dv">2500</span>)</span>
+<span id="cb5-36"><a href="#cb5-36"></a><span class="in">```</span></span>
+<span id="cb5-37"><a href="#cb5-37"></a></span>
+<span id="cb5-40"><a href="#cb5-40"></a><span class="in">```{r}</span></span>
+<span id="cb5-41"><a href="#cb5-41"></a><span class="fu">ggplot</span>(fide_ratings_september1, <span class="fu">aes</span>(<span class="at">x =</span> fed, <span class="at">y =</span> avg_rating)) <span class="sc">+</span></span>
+<span id="cb5-42"><a href="#cb5-42"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span> </span>
+<span id="cb5-43"><a href="#cb5-43"></a>  <span class="fu">theme_classic</span>()</span>
 <span id="cb5-44"><a href="#cb5-44"></a><span class="in">```</span></span>
-<span id="cb5-45"><a href="#cb5-45"></a></span>
-<span id="cb5-48"><a href="#cb5-48"></a><span class="in">```{r}</span></span>
-<span id="cb5-49"><a href="#cb5-49"></a><span class="fu">ggplot</span>(fide_ratings_september1, <span class="fu">aes</span>(<span class="at">x =</span> fed, <span class="at">y =</span> avg_rating)) <span class="sc">+</span></span>
-<span id="cb5-50"><a href="#cb5-50"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span> </span>
-<span id="cb5-51"><a href="#cb5-51"></a>  <span class="fu">theme_classic</span>()</span>
-<span id="cb5-52"><a href="#cb5-52"></a><span class="in">```</span></span>
-<span id="cb5-53"><a href="#cb5-53"></a><span class="in">```{r, fig.alt="Horizontal bar chart showing average chess ratings by federation for countries with more than 2500 players. Bars are colored with a gradient from light blue to dark blue based on rating."}</span></span>
-<span id="cb5-54"><a href="#cb5-54"></a><span class="in">fide_ratings_september1 %&gt;%</span></span>
-<span id="cb5-55"><a href="#cb5-55"></a><span class="in">  ggplot(aes(x = reorder(fed, avg_rating), y = avg_rating, fill = avg_rating)) +</span></span>
-<span id="cb5-56"><a href="#cb5-56"></a><span class="in">  geom_col() +</span></span>
-<span id="cb5-57"><a href="#cb5-57"></a><span class="in">  coord_flip() +</span></span>
-<span id="cb5-58"><a href="#cb5-58"></a><span class="in">  labs(title = "Which Federations Have the Highest Average Chess Ratings?",</span></span>
-<span id="cb5-59"><a href="#cb5-59"></a><span class="in">       subtitle = "Countries with &gt;2500 players (FIDE September ratings)",</span></span>
-<span id="cb5-60"><a href="#cb5-60"></a><span class="in">       x = "Federation", y = "Average Rating",</span></span>
-<span id="cb5-61"><a href="#cb5-61"></a><span class="in">       caption = "Author: Karyna Steele | Date: September 2025 | Source: FIDE Player Database") +</span></span>
-<span id="cb5-62"><a href="#cb5-62"></a><span class="in">  theme_classic()</span></span>
-<span id="cb5-63"><a href="#cb5-63"></a><span class="in">```</span> </span>
+<span id="cb5-45"><a href="#cb5-45"></a><span class="in">```{r, fig.alt="Horizontal bar chart showing average chess ratings by federation for countries with more than 2500 players. Bars are colored with a gradient from light blue to dark blue based on rating."}</span></span>
+<span id="cb5-46"><a href="#cb5-46"></a><span class="in">fide_ratings_september1 %&gt;%</span></span>
+<span id="cb5-47"><a href="#cb5-47"></a><span class="in">  ggplot(aes(x = reorder(fed, avg_rating), y = avg_rating, fill = avg_rating)) +</span></span>
+<span id="cb5-48"><a href="#cb5-48"></a><span class="in">  geom_col() +</span></span>
+<span id="cb5-49"><a href="#cb5-49"></a><span class="in">  coord_flip() +</span></span>
+<span id="cb5-50"><a href="#cb5-50"></a><span class="in">  labs(title = "Which Federations Have the Highest Average Chess Ratings?",</span></span>
+<span id="cb5-51"><a href="#cb5-51"></a><span class="in">       subtitle = "Countries with &gt;2500 players (FIDE September ratings)",</span></span>
+<span id="cb5-52"><a href="#cb5-52"></a><span class="in">       x = "Federation", y = "Average Rating",</span></span>
+<span id="cb5-53"><a href="#cb5-53"></a><span class="in">       caption = "Author: Karyna Steele | Date: September 2025 | Source: FIDE Player Database") +</span></span>
+<span id="cb5-54"><a href="#cb5-54"></a><span class="in">  theme_classic()</span></span>
+<span id="cb5-55"><a href="#cb5-55"></a><span class="in">```</span> </span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
