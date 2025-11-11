@@ -185,7 +185,7 @@ Note: `ifelse()` (from base R) and `if_else()` (from tidyverse) are different fu
 
 <details>
 <summary>Examples</summary>
-```{r}
+```{r eval=FALSE}
 #| error: true
 
 x <- c(-1, -2, 4, 9, NA)
@@ -248,7 +248,7 @@ diamonds |>
 #4
 diamonds |>
   filter(cut == "Fair") |>
-  any(price > 3000)
+  summarize(any(price > 3000))
   
 #5
 
