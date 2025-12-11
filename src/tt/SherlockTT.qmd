@@ -1,0 +1,175 @@
+---
+title: "Sherlock Holmes Tidy Tuesday"
+---
+
+## TidyTuesday Section (optional)
+
+::: {.callout-important title="Instructions"}
+You can count work on this week's TidyTuesday toward the exceptional work required for an A in the Homework component.
+:::
+
+
+## Research Question: Which Sherlock Holmes Books are the Most Exciting?
+
+I am using sentiment analysis to see which of the Sherlock Holmes books are most exciting.
+I am assuming that more variability and rapid changes in sentiment represent the ups, downs, twists, and turns of a book.
+These things, for me, are what I think makes a book more exciting to read.
+For example, "A Study In Scarlet" might be more exciting than something like "The Memoirs of Sherlock Holmes," just based on how volatile the plot is.
+Other than this dataset, I think that this tactic of text analysis to view sentiment can be helpful in places such as the marketing world.
+This is one reason why I have decided to do this project.
+
+```{r}
+library(readr)
+library(plotly)
+library(shiny)
+library(tidyverse)
+library(tidytext)
+
+# Option 2: Read directly from GitHub
+
+holmes <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-11-18/holmes.csv')
+```
+
+### "A Study in Scarlet"
+
+Below is a single plot that shows a change in sentiment across the book "A Study in Scarlet," the first Sherlock Holmes book that came out.
+Sentiment is calculated by looking at each word in a bin of 50 words and identifying them as either positive or
+
+```{r}
+first_book_sentiment <- holmes %>%
+  filter(book == "A Study In Scarlet") %>%
+  mutate(line_bin = floor(line_num / 50)) %>%
+  unnest_tokens(word, text) %>%
+  mutate(word = str_to_lower(word)) %>%
+  inner_join(get_sentiments("bing"), by = "word") %>%
+  count(line_bin, sentiment) %>%
+  pivot_wider(names_from = sentiment, values_from = n, values_fill = 0) %>%
+  mutate(score = positive - negative)
+
+ggplot(first_book_sentiment, aes(x = line_bin, y = score)) +
+  geom_line() +
+  geom_smooth(se = FALSE) +
+  labs(title = "Sentiment Arc: A Study In Scarlet", 
+       x = "Narrative Progress (bins of 50 lines)", 
+       y = "Sentiment Score") +
+  theme_minimal()
+```
+
+```{r}
+all_books_sentiment <- holmes %>%
+  mutate(line_bin = floor(line_num / 50)) %>%         
+  unnest_tokens(word, text) %>%
+  mutate(word = str_to_lower(word)) %>%                
+  inner_join(get_sentiments("bing"), by = "word") %>%                 
+  count(book, line_bin, sentiment) %>%                
+  pivot_wider(
+    names_from = sentiment,
+    values_from = n,
+    values_fill = 0
+  ) %>%
+  mutate(score = positive - negative)
+```
+
+```{r}
+#| fig-height: 20
+#| fig-width: 20
+ggplot(all_books_sentiment, aes(x = line_bin, y = score)) +
+  geom_line() +
+  facet_wrap(~ book, scales = "free_x") +  
+  labs(title = "Sentiment Arc Across All Sherlock Holmes Stories",
+       x = "Narrative Progress (50-line bins)",
+       y = "Sentiment Score (positive - negative)") +
+  theme_minimal() +
+  theme(
+    strip.text = element_text(face = "bold"),
+    plot.title = element_text(size = 16, face = "bold")
+  )
+```
+
+```{r}
+tokens <- holmes %>%
+  mutate(line_bin = floor(line_num / 50)) %>%
+  unnest_tokens(word, text) %>%
+  mutate(word = str_to_lower(word)) %>%
+  anti_join(stop_words, by = "word")
+
+adj_tokens <- tokens %>%
+  inner_join(
+    parts_of_speech %>% filter(pos == "Adjective"),
+    by = "word"
+  ) %>%
+  filter(!is.na(word))
+
+top_adjectives_per_bin <- adj_tokens %>%
+  count(book, line_bin, word, sort = TRUE) %>%
+  group_by(book, line_bin) %>%
+  slice_max(n, n = 5, with_ties = FALSE) %>%              
+  summarise(top_adjectives = paste(word, collapse = ", "), .groups = "drop")
+
+interactive_data <- all_books_sentiment %>%
+  left_join(top_adjectives_per_bin, by = c("book", "line_bin") )%>%
+  mutate(top_adjectives = ifelse(is.na(top_adjectives), "No adjectives", top_adjectives)) %>%
+  mutate(
+    hover_text = paste0(
+      "Bin: ", line_bin, "\n",
+      "Sentiment Score: ", score, "\n",
+      "Top adjectives:\n", str_replace_all(top_adjectives, ",", "\n")))
+```
+
+### Shiny App
+```{r}
+ui <- fluidPage(
+  titlePanel("Sherlock Holmes Sentiment Explorer"),
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("book", "Select a Book:", choices = unique(interactive_data$book), selected = "A Study In Scarlet", multiple = TRUE)
+    ),
+    mainPanel(
+      plotlyOutput("sentimentPlot")
+    )
+  )
+)
+
+server <- function(input, output, session) {
+  output$sentimentPlot <- renderPlotly({
+    data <- interactive_data %>% filter(book == input$book) %>%
+      mutate(
+        hover_text = paste0(
+          "Bin: ", line_bin, "\n",
+          "Score: ", score, "\n",
+          "Top adjectives:\n", str_replace_all(top_adjectives, ",", "\n")
+        )
+      )
+    
+    p <- ggplot(data, aes(x = line_bin, y = score)) +
+      geom_line() +
+      geom_point(aes(text = hover_text), 
+                 size = 2) +
+      labs(title = paste("Sentiment Arc:", input$book),
+           x = "Narrative Progress (50-line bins)",
+           y = "Sentiment Score") +
+      theme_minimal()
+    
+    ggplotly(p, tooltip = "text")
+  })
+}
+shinyApp(ui, server)
+```
+
+Notes:
+Make a plot that does comparisons across books
+Take out smooth lines from the facet plot, because it oversimplifies the ups and downs too much.
+Consider going word for word and letting that be a tuning parameter in the shiny
+
+comparison plot:
+vertical lines creating a bar plot
+
+Julia Silge - text analysis and sentiment analysis
+
+## Conclusion
+
+I have found that "A Study in Scarlet", "The Hound of the Baskervilles", "The Sign of the Four", and "The Valley of Fear" seem to be the most exciting books in the Sherlock Holmes collection, based on volatility and change of sentiment every 50 lines. They seem to have the highest highs and the lowest lows across the whole story line, indicating ups and downs in discovery, dead ends, twists and turns, and overall excitement in the plot.
+
+## Implications
+
+I have used this tidy tuesday to add to my portfolio to demonstrate an ability to work in marketing, product design, or user experience. Using the tidytext package can allow me to filter through things like product review on multiple products at once and research what reviewers most like and dislike about a product. This package is so useful in analyzing human sentiment in a quantitative way.  

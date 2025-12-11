@@ -1,5 +1,5 @@
 ---
-title: "Professional Viz Sample"
+title: "Professional Viz"
 ---
 
 ```{r}
@@ -87,10 +87,11 @@ ggplot(df, aes(x = coordinate_x_raw, coordinate_y_raw)) +
   facet_wrap(~position, labeller = labeller(position = facet_labels)) +
   theme_void() +
   theme(
-    plot.title = element_text(hjust = 0.5, vjust = 5, face = "bold", color = "#1D3557", size = 24),
-    plot.subtitle = element_text(hjust = 0.5, vjust = 10),
-    strip.text = element_text(face = "bold", size = 14, color = "#1D3557", hjust = 0.5),
-    legend.position = "right"
+    plot.title = element_text(family = "Courier New", hjust = 0.5, vjust = 5, face = "bold", color = "#1D3557", size = 24),
+    plot.subtitle = element_text(family = "Arial",hjust = 0.5, vjust = 10),
+    strip.text = element_text(family = "Courier New", face = "bold", size = 14, color = "#1D3557", hjust = 0.5, vjust = 1),
+    legend.position = "right",
+    legend.text = element_text(family = "Courier New", size = 12),
   ) +
   labs(
     title = "Maximizing Impact by Position:\nWhere Should You Score From?",
@@ -98,4 +99,3 @@ ggplot(df, aes(x = coordinate_x_raw, coordinate_y_raw)) +
     caption = "Data: wehoop R package & ESPN | Visualization by: Karyna Steele"
   )
 ```
-

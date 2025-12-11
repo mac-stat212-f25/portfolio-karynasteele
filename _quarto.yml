@@ -66,13 +66,10 @@ book:
 
     - part: "TidyTuesday"
       chapters:
-      - src/tt/hw01-tt.qmd
-      - src/tt/hw02-tt.qmd
+      - src/tt/SherlockTT.qmd
 
     - part: "In-Class Activities"
       chapters:
-      - src/ica/ica-sample1.qmd
-      - src/ica/ica-sample2.qmd
       - src/ica/03-adv-ggplot-notes.qmd
       - src/ica/04-adv-maps-1-notes.qmd
       - src/ica/06-wrangling-1-notes.qmd
@@ -81,10 +78,13 @@ book:
       - src/ica/09-functions-notes.qmd
       - src/ica/10-base-r-notes.qmd
       - src/ica/12-iteration-2-notes.qmd
+      - src/ica/14-apis-2-notes.qmd
+      - src/ica/15-scraping-notes.qmd
+      - src/ica/16-databases-notes.qmd
+      - src/ica/18-interactive-viz-notes.qmd
+
 
   appendices:
-  - src/appx/appx-sample1.qmd
-  - src/appx/appx-sample2.qmd
   - mm/mm.md
 
 

@@ -61,7 +61,7 @@ duckdb_read_csv(con, "songs", "https://hash-mac.github.io/stat212site-f25/relati
 
 Here, we'll use datasets from the `nycflights13` package. 
 
-The `DBI` package provides the `dbWriteTable()` function to write dataset objects (in constrast to csv files) to a database:
+The `DBI` package provides the `dbWriteTable()` function to write dataset objects (in contrast to csv files) to a database:
 
 ```{r}
 dbWriteTable(con, "flights", nycflights13::flights)
