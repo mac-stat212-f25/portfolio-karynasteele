@@ -1,5 +1,101 @@
 ---
-title: "Professional Viz Sample"
+title: "Professional Viz"
 ---
 
-Add content here
+```{r}
+library(wehoop)
+library(tidyverse)
+library(ggplot2)
+library(jpeg)
+library(magick)
+library(viridis)
+library(patchwork)
+```
+
+```{r}
+wnba <- load_wnba_pbp()
+head(wnba)
+names(wnba)
+```
+
+```{r}
+wilson <- 3149391
+collier <- 3917450
+ionescu <- 4066533
+
+df <- wnba %>%
+  filter(scoring_play == TRUE) %>%
+  filter(athlete_id_1 %in% c(ionescu, wilson, collier)) %>%
+  select(athlete_id_1, type_text, coordinate_x_raw, coordinate_y_raw) %>%
+  mutate(player = case_when(
+    athlete_id_1 == ionescu ~ "Sabrina Ionescu",
+    athlete_id_1 == wilson ~ "A'ja Wilson",
+    athlete_id_1 == collier ~ "Napheesa Collier")) %>%
+  mutate(position = case_when(
+    player == "A'ja Wilson" ~ "Center",
+    player == "Napheesa Collier" ~ "Forward",
+    player == "Sabrina Ionescu" ~ "Guard"
+  )) %>%
+  mutate(coordinate_y_raw = coordinate_y_raw + 4)
+head(df)
+```
+```{r}
+full <- image_read("../pv/court.jpg") %>%
+  image_rotate(90) %>%
+  as.raster()
+```
+
+```{r}
+desc <- data.frame(
+  position = c("Guard", "Forward", "Center"),
+  x = 25,       # center horizontally
+  y = 50,       # place below your plotted court range
+  label = c(
+    "The best guards are sinking long\nrange shots or driving to the\nbasket for a lay.",
+    "A good forward should be scoring lots\nof mid-range shots, also looking to\nscore threes when open.",
+    "The best centers should be dominating\nthe paint, scoring most points\nnear the rim."
+  )
+)
+
+facet_labels <- c(
+  Guard = "Guard:\nSabrina Ionescu",
+  Forward = "Forward:\nNapheesa Collier",
+  Center = "Center:\nA'ja Wilson"
+)
+
+ggplot(df, aes(x = coordinate_x_raw, coordinate_y_raw)) +
+  annotation_raster(
+    full,
+    xmin = -5, xmax = 55,
+    ymin = -42, ymax = 5 
+  ) +
+  geom_bin2d(bins = 30, alpha = 0.85) +
+  geom_text(data = desc, aes(x = x, y = y, label = label),
+            size = 3, fontface = "italic", vjust = 0.5, color = "black") +
+  coord_fixed(xlim = c(0, 50), ylim = c(55, 0)) +
+  scale_y_reverse() +
+  scale_fill_gradient(
+    low = "blue",
+    high = "red",
+    name = "Count", 
+    guide = guide_colorbar(
+      barwidth = 1,
+      barheight = 8,
+      title.position = "top"
+    )
+  ) +
+  facet_wrap(~position, labeller = labeller(position = facet_labels)) +
+  theme_void() +
+  theme(
+    plot.title = element_text(family = "Courier New", hjust = 0.5, vjust = 5, face = "bold", color = "#1D3557", size = 24),
+    plot.subtitle = element_text(family = "Arial",hjust = 0.5, vjust = 10),
+    strip.text = element_text(family = "Courier New", face = "bold", size = 14, color = "#1D3557", hjust = 0.5, vjust = 1),
+    legend.position = "right",
+    legend.text = element_text(family = "Courier New", size = 12),
+  ) +
+  labs(
+    title = "Maximizing Impact by Position:\nWhere Should You Score From?",
+    subtitle = "A comparison of top WNBA players' shot completion during the 2025 season",
+    caption = "Data: wehoop R package & ESPN | Visualization by: Karyna Steele"
+  )
+```
